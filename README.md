@@ -10,3 +10,6 @@ Installation
 pip install raylib
 pip install websockets
 ```
+
+Requirements
+- Python 3.0+
