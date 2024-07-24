@@ -1,12 +1,12 @@
 let connected = false;
-let server = new WebSocket("");
+let server = new WebSocket("wss://127.0.0.1");
 
 document.getElementById("connect-button").addEventListener("click", function() {
     const ip_input = document.getElementById("ip-input").value;
     const port_input = document.getElementById("port-input").value;
 
     if (!connected) {
-        server = new WebSocket(`ws://${ip_input}:${port_input}`);
+        server = new WebSocket(`wss://${ip_input}:${port_input}`);
         server.onerror = function(event) {
             console.error("WebSocket error:", event);
         };
