@@ -4,11 +4,17 @@ let server = new WebSocket("wss://127.0.0.1");
 document.getElementById("connect-button").addEventListener("click", function() {
 	console.log("Button Pressed");
     if (!connected) {
-        // server = new WebSocket(`ws://${ip_input}`);
-        // server.onerror = function(event) {
-        //     console.error("WebSocket error:", event);
-        // }\
-        server = new WebSocket("wss://76fb-122-150-129-187.ngrok-free.app");
+        var ip_input = document.getElementById("ip-input").value;
+        var port = document.getElementById("port-input").value;
+
+        if (port != "") {
+            server = new WebSocket(`wss://${ip_input}:${port}`);
+        } else {
+            server = new WebSocket(`wss://${ip_input}`);
+        }
+        server.onerror = function(event) {
+            console.error("WebSocket error:", event);
+        }
 
         server.onopen = function(event) {
             server.send("Client Joined");

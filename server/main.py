@@ -5,7 +5,7 @@ import asyncio
 import websockets
 
 # server
-IP = "10.12.156.171"
+IP = "127.0.0.1"
 PORT = 8000;
 console_log = [];
 console_log_lock = threading.Lock();
