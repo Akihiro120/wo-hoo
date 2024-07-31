@@ -5,8 +5,8 @@ import asyncio
 import websockets
 
 # server
-IP = "10.12.162.43"
-PORT = 12345;
+IP = "10.12.156.171"
+PORT = 8000;
 console_log = [];
 console_log_lock = threading.Lock();
 window_closed = False;
@@ -38,7 +38,7 @@ async def handle_server():
     await server.wait_closed() 
 
 def server():
-    console_log.append(("WebSocket server is running on ws://{0}:{1}".format(IP, PORT), WHITE));
+    console_log.append(("WebSocket server is running on wss://{0}:{1}".format(IP, PORT), WHITE));
     asyncio.new_event_loop().run_until_complete(handle_server());
 
 def main():

@@ -2,14 +2,13 @@ let connected = false;
 let server = new WebSocket("wss://127.0.0.1");
 
 document.getElementById("connect-button").addEventListener("click", function() {
-    const ip_input = document.getElementById("ip-input").value;
-    const port_input = document.getElementById("port-input").value;
-
+	console.log("Button Pressed");
     if (!connected) {
-        server = new WebSocket(`wss://${ip_input}:${port_input}`);
-        server.onerror = function(event) {
-            console.error("WebSocket error:", event);
-        };
+        // server = new WebSocket(`ws://${ip_input}`);
+        // server.onerror = function(event) {
+        //     console.error("WebSocket error:", event);
+        // }\
+        server = new WebSocket("wss://76fb-122-150-129-187.ngrok-free.app");
 
         server.onopen = function(event) {
             server.send("Client Joined");
@@ -36,8 +35,8 @@ document.getElementById("connect-button").addEventListener("click", function() {
 
 document.getElementById("disconnect-button").addEventListener("click", function() {
     if (connected) {
-        const msg = document.getElementById("message").value;
-        const username = document.getElementById("username").value;
+        var msg = document.getElementById("message").value;
+        var username = document.getElementById("username").value;
         if (username == "") {
             username = "Client";
         }
@@ -48,8 +47,8 @@ document.getElementById("disconnect-button").addEventListener("click", function(
 
 document.getElementById("send-button").addEventListener("click", function() {
     if (connected) {
-        const msg = document.getElementById("message").value;
-        const username = document.getElementById("username").value;
+        var msg = document.getElementById("message").value;
+        var username = document.getElementById("username").value;
         if (username == "") {
             username = "Client";
         }
