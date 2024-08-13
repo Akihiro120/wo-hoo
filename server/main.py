@@ -1,59 +1,61 @@
-from pyray import *
-from graphical import *
-import threading;
-import asyncio
-import websockets
+import websockets;
+import asyncio;
+import json;
 
-# server
-IP = "127.0.0.1"
-PORT = 8000;
-console_log = [];
-console_log_lock = threading.Lock();
-window_closed = False;
+# addr
+ip_addr = "127.0.0.1";
+port = 8000;
 
 clients = [];
+user_names = [];
 
-async def handle_client(websocket, path):
-    console_log.append(("Connected Client {0}".format(websocket.remote_address), WHITE))
-    clients.append(websocket)
+# add client
+async def register_client(websocket, path):
+    # connect client
+    print("Client Connected: {0}".format(websocket.remote_address))
+    client_name = await websocket.recv()
+    clients.append(websocket);
+    user_names.append(client_name);
+    
+    # send the list to all clients
+    for client in clients:
+        format = "members " + json.dumps(user_names);
+        await client.send(format);
 
+    # client events
     try:
-        await websocket.send("Server: Welcome!")
+        # receive msg
         while True:
             msg = await websocket.recv()
-            console_log.append(("Received message from {0}: {1}".format(websocket.remote_address, msg), WHITE));
+            print("Received Message from {0}: {1}".format(websocket.remote_address, msg));
+            message_type, message_data = msg.split(" ", 1);
+            # send the message to all clients
+            if (message_type == "message"):
+                for client in clients:
+                    await client.send("message {0}".format(message_data));
 
-            for client in clients:
-                try:
-                    await client.send(msg)
-                except Exception as e:
-                    print(e);
     except websockets.ConnectionClosed:
-        console_log.append(("Client {0} Disconnected".format(websocket.remote_address), WHITE))
+        print("Client Disconnected: {0}".format(websocket.remote_address));
+        index = clients.index(websocket);
+        user_names.remove(user_names[index]);
         clients.remove(websocket);
-        
 
-async def handle_server():
-    server = await websockets.serve(handle_client, IP, PORT);
-    await server.wait_closed() 
+        # update the client list for existing clients
+        for client in clients:
+            format = "members " + json.dumps(user_names);
+            await client.send(format);
 
-def server():
-    console_log.append(("WebSocket server is running on wss://{0}:{1}".format(IP, PORT), WHITE));
-    asyncio.new_event_loop().run_until_complete(handle_server());
+# server
+async def server(websocket, path):
+    await register_client(websocket, path);
 
 def main():
-    init_window(800, 600, "Messaging Server");
-    roboto = load_font_ex("Roboto-Light.ttf", 24, None, 0);
+    # create server
+    print("Began Server at {0}:{1}".format(ip_addr, port));
+    server_instance = websockets.serve(server, ip_addr, port);
+    asyncio.get_event_loop().run_until_complete(server_instance);
+    asyncio.get_event_loop().run_forever();
 
-    server_thread = threading.Thread(target=server, args=());
-    server_thread.start();
-
-    while not window_should_close():
-        # draw the gui
-        graphical(console_log, roboto);
-
-    close_window();
-    server_thread.join();
-
+# call the main function
 if __name__ == "__main__":
-    main()
+    main();

@@ -1,26 +1,61 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <Title>Client</Title>
-    <script src="client.js" defer></script>
-</head>
-<body>
-    <h1>Messaging App</h1>
-    <hr>
-    <p id="connection-status">STATUS: Disconnected</p>
-    <p>IP <input id="ip-input" type="text" value="akihiroserver.com"></p>
-    <p>PORT <input id="port-input" type="text" value=""></p>
-    <button id="connect-button">Connect</button>
-    <button id="disconnect-button">Disconnect</button>
-    <hr>
-    <p>Username <input id="username"></p>
-    <hr>
-    <ul id="messages">
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>Cool Messaging Website</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <div id="application_container">
+            <h1 id="heading_container">Cool Messaging Website</h1>
+            <!--Connection Panel-->
+            <div id="connection_container">
+                <div id="address_text"><p>IP Address</p></div>
+                <div id="address_input"><input id="ip_address_input" type="text" value="akihiroserver.com"></div>
 
-    </ul>
-    <input id="message">
-    <button id="send-button">Send</button>
-</body>
+                <div id="port_text"><p>PORT</p></div>
+                <div id="port_input"><input id="port_input_box" type="text"></div>
+            </div>
+
+            <!--User Panel-->
+            <div id="user_container">
+                <div id="user_text"><p>Username</p></div>
+                <div id="user_input"><input id="user_name_input" type="text"></div>
+                <!--<p>Color</p>
+                <input type="color">-->
+                <div id="connect_button"><button id="connect_button_element" onclick="on_connect()">Connect</button></div>
+                <div id="disconnect_button"><button id="disconnect_button_element" onclick="on_disconnect()">Disconnect</button></div>
+            </div>
+
+            <!--Online Panel-->
+            <div id="online_container">
+                <p id="connection_status"><b>Connection Status: Disconnected</b></p>
+                <hr>
+                <p>Members Online: </p>
+                <ul id="online_members">
+                   <!--<li class="member">Akihiro</li>-->
+                </ul>
+            </div>
+
+            <!--Message Panel-->
+            <div id="messages_container">
+                <div id="messages_panel">
+                    <ul id="messages">
+                        <!--<li class="message msg1">This is a Test</li>
+                        <li class="message msg2">This is a Test</li>-->
+                    </ul>
+                </div>
+                <div id="send_panel">
+                    <div id="send_input"><input id="send_msg_input" type="text" placeholder="Enter Text Here..."></div>
+                    <div id="send_button"><button id="send_msg_button" onclick="on_send()">></button></div>
+                </div>
+            </div>
+
+            <!--Footer-->
+            <div id="footer">
+                <a href="https://github.com/Akihiro120"><p>Akihiro@https://github.com/Akihiro120</p></a>
+            </div>
+        </div>
+    </body>
+    <script src="networking.js"></script>
 </html>
